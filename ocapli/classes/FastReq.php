@@ -1,44 +1,24 @@
 <?php
 
-class FastRec 
+class FastReq 
 {
-	private static 
-		$model = Array();
-	private static 
+	public static 
 		$columns = Array();
 
-	/* Return model name in a string */
-	private static function get_model($get_called_class)
-	{
-		if(!array_key_exists($get_called_class, self::$model))
-		{
-			self::$model[$get_called_class] = Array(
-				"UnitTest" => "unit_test",
-				"ConfLang" => "conf_lang_b"
-			)[$get_called_class];
-		}
-		return self::$model[$get_called_class];
-	}
 	/* Return array with custom model structures */
-	private static function get_columns()
-	{
-		$get_called_class = get_called_class();
-
-		if(array_key_exists($get_called_class, self::$columns))
-		{
-			return self::$columns[$get_called_class];
-		}
-		else
-		{
-			self::$columns[$get_called_class] = new FastReqColumns(self::get_model($get_called_class));
-			return self::$columns[$get_called_class];
-		}
-	}
-	/* Return model and structure in one array to instance FastReqInstanceRecords */
 	private static function get_model_and_columuns()
 	{
-		$columns = self::get_columns();
-		return Array("model"=>$columns->model, "columns"=>$columns);
+		$model = strtr(get_called_class(), array(
+			"UnitTest" => "unit_test",
+			"ConfLang" => "conf_lang_b"
+		));
+
+		if(!array_key_exists($model, self::$columns))
+		{
+			self::$columns[$model] = new FastReqColumns($model);
+		}
+
+		return Array("model"=>$model, "columns"=>self::$columns[$model]);
 	}
 	/* Return a new instance of FastReqInstanceRecords */
 	private static function new_instance_records()

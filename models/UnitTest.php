@@ -1,6 +1,6 @@
 <?php
 
-class UnitTest extends FastRec
+class UnitTest extends FastReq
 {
 }
 

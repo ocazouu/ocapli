@@ -5,7 +5,6 @@ class FasReqInstanceRecords
 
  	public
 		$configQuery =  Array(
-			"columns" => Array(),
 			"model"   => Array(),
 			"select"  => Array(),
 			"insert"  => Array(),
@@ -17,15 +16,13 @@ class FasReqInstanceRecords
 	public
 		$count = 3;
 
-	private 
-		$columns,
+	private
 		$query_string,
 		$buildSelectQueryString,
 		$records = Array("unload" => true);
 
 	function __construct($config)
 	{
-		$this->configQuery["columns"] = $config["columns"];
 		$this->configQuery["model"]   = $config["model"];
 	}
 	/*
@@ -165,7 +162,7 @@ class FasReqInstanceRecords
 	{
 		if($this->create($config))
 		{
-			$auto_increment_column = $this->configQuery["columns"]->auto_increment_column;
+			$auto_increment_column = FastReq::$columns[$this->configQuery["model"]]->auto_increment_column;
 
 			if($auto_increment_column)
 			{

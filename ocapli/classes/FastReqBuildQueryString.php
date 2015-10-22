@@ -11,6 +11,14 @@ class FastReqBuildQueryString
 	{
 		$this->configQuery = $configQuery;
 	}
+	public function get_default_config()
+	{
+		return FastReq::$columns[$this->configQuery["model"]]->get_default_config();
+	}
+	public function structures()
+	{
+		return FastReq::$columns[$this->configQuery["model"]]->structures;
+	}
 	public function set_config_query($configQuery)
 	{
 		$this->configQuery = $configQuery;
@@ -68,9 +76,9 @@ class FastReqBuildQueryString
 					$where .= (strpos($field, " ") !== false) ? " " : " = ";
 					if($value !== false)
 					{
-						if(array_key_exists($field, $this->configQuery["columns"]->structures))
+						if(array_key_exists($field, $this->structures()))
 						{
-							$field_structure = $this->configQuery["columns"]->structures[$field];
+							$field_structure = $this->structures()[$field];
 						}
 						else
 						{
@@ -227,7 +235,7 @@ class FastReqBuildQueryString
 		$values = '';
 
 		$i = 0;
-		foreach ($this->configQuery["columns"]->get_default_config() as $key => $value)
+		foreach ($this->get_default_config() as $key => $value)
 		{
 			$sets .= ( $i++ ? ', ' :  '' ) . $key;
 			$values .= ( $i !== 1 ? ', ' :  '' );
@@ -246,9 +254,9 @@ class FastReqBuildQueryString
 				}
 			}
 
-			if($this->configQuery["columns"]->structures[$key]["is_int"])
+			if($this->structures()[$key]["is_int"])
 			{
-				if($this->configQuery["columns"]->structures[$key]["auto_increment"])
+				if($this->structures()[$key]["auto_increment"])
 				{
 					$values .= "NULL";
 				}
@@ -275,7 +283,7 @@ class FastReqBuildQueryString
 		$fields_values = '';
 		$i             = 0;
 
-		foreach ($this->configQuery["columns"]->get_default_config() as $key => $value)
+		foreach ($this->get_default_config() as $key => $value)
 		{
 
 			if(array_key_exists($key, $this->configQuery["update"]))
@@ -283,7 +291,7 @@ class FastReqBuildQueryString
 				$fields_values .= ( $i++ ? ', ' :  '' ) . $key . " = ";
 				$value = $this->configQuery["update"][$key];
 
-				if($this->configQuery["columns"]->structures[$key]["is_int"])
+				if($this->structures()[$key]["is_int"])
 				{
 					$fields_values .= (int)$value;
 				}

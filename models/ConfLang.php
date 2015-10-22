@@ -1,6 +1,6 @@
 <?php
 
-class ConfLang extends FastRec
+class ConfLang extends FastReq
 {
 }
 
