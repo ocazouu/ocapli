@@ -115,7 +115,7 @@ class FasReqInstanceRecords
 		{
 			$this->configQuery["limit"]["all"] = true;
 			$this->buildQueryString = new FastReqBuildQueryString($this->configQuery);
-			$count = DbTool::get_requete($this->buildQueryString->for_count($this->configQuery));
+			$count = DbTool::get_request($this->buildQueryString->for_count($this->configQuery));
 			if($count)
 			{
 				return mysqli_fetch_array($count)[0];
@@ -150,7 +150,7 @@ class FasReqInstanceRecords
 		$this->configQuery["insert"] = $config;
 
 		$BuildQuery = new FastReqBuildQueryString($this->configQuery);
-		$req_insert = dbtool::get_requete($BuildQuery->for_insert());
+		$req_insert = dbtool::get_request($BuildQuery->for_insert());
 
 		if($req_insert)
 		{	
@@ -187,7 +187,7 @@ class FasReqInstanceRecords
 		$this->configQuery["update"] = $config;
 
 		$BuildQuery = new FastReqBuildQueryString($this->configQuery);
-		$req_update = dbtool::get_requete($BuildQuery->for_update());
+		$req_update = dbtool::get_request($BuildQuery->for_update());
 
 		if($req_update)
 		{	
@@ -250,7 +250,7 @@ class FasReqInstanceRecords
 
 				if($this->query_string)
 				{
-					$query = DbTool::get_requete($this->query_string);
+					$query = DbTool::get_request($this->query_string);
 
 					if ($query)
 					{

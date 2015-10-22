@@ -78,7 +78,7 @@ class DbTool {
 	{
 		return self::$_instance;
 	}
-	public static function get_requete($requete)
+	public static function get_request($requete)
 	{
 		$self = DbTool::get_instance();
 		if(!$self->is_connect)return false;

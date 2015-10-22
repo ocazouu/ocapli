@@ -11,7 +11,6 @@ class FastReqBuildQueryString
 	{
 		$this->configQuery = $configQuery;
 	}
-
 	public function set_config_query($configQuery)
 	{
 		$this->configQuery = $configQuery;
@@ -24,7 +23,7 @@ class FastReqBuildQueryString
 			$select = "SELECT ";
 			foreach ($this->configQuery["select"] as $value)
 			{
-				$select .= ($i++ ? ", " : "") . $value;
+				$select .= ($i++ ? ", " : "") . $this->escape($value);
 			}
 			$select .= " FROM";
 		}
@@ -69,7 +68,24 @@ class FastReqBuildQueryString
 					$where .= (strpos($field, " ") !== false) ? " " : " = ";
 					if($value !== false)
 					{
-						$where .= (is_integer($value)) ? $value : "'$value'";
+						if(array_key_exists($field, $this->configQuery["columns"]->structures))
+						{
+							$field_structure = $this->configQuery["columns"]->structures[$field];
+						}
+						else
+						{
+							$field_structure = false;
+						}
+
+						if($field_structure && $field_structure["is_int"])
+						{
+							$where .= (int)$value;
+						}
+						else
+						{
+							$value  = $this->escape($value);
+							$where .= "'$value'";
+						}
 					}
 				}
 			}
@@ -94,7 +110,7 @@ class FastReqBuildQueryString
 			$order = "ORDER BY ";
 			foreach ($this->configQuery["order"] as $value)
 			{
-				$order .= ($i++ ? ", " : "") . $value;
+				$order .= ($i++ ? ", " : "") . $this->escape($value);
 			}
 		}
 		return $order;
@@ -109,13 +125,14 @@ class FastReqBuildQueryString
 			$group = "GROUP BY ";
 			foreach ($this->configQuery["group"] as $value)
 			{
-				$group .= ($i++ ? ", " : "") . $value;
+				$group .= ($i++ ? ", " : "") . $this->escape($value);
 			}
 		}
 		return $group;
 	}
 	public function build_query_limit()
 	{
+		$limit = false;
 
 		if(array_key_exists("all", $this->configQuery["limit"]))
 		{
@@ -189,7 +206,7 @@ class FastReqBuildQueryString
 				$this->configQuery["limit"]["all"] = true;
 				$this->set_config_query($this->configQuery);
 
-				$req_total = DbTool::get_requete($this->for_count());
+				$req_total = DbTool::get_request($this->for_count());
 				if($req_total)
 				{
 					$total = mysqli_fetch_array($req_total)[0];
@@ -204,14 +221,13 @@ class FastReqBuildQueryString
 	public function for_insert()
 	{
 
-		$default_config = $this->configQuery["columns"]->get_default_config();
 		$model = $this->configQuery["model"];
 
 		$sets = '';
 		$values = '';
 
 		$i = 0;
-		foreach ($default_config as $key => $value)
+		foreach ($this->configQuery["columns"]->get_default_config() as $key => $value)
 		{
 			$sets .= ( $i++ ? ', ' :  '' ) . $key;
 			$values .= ( $i !== 1 ? ', ' :  '' );
@@ -243,6 +259,7 @@ class FastReqBuildQueryString
 			}
 			else
 			{
+				$value 	= $this->escape($value);
 				$values .= "'$value'";
 			}
 		}
@@ -251,31 +268,19 @@ class FastReqBuildQueryString
 	}
 	public function for_update()
 	{
-		$limit = $this->build_query_limit();
-
-		if($limit !== false)
-		{
-			$select = $this->build_query_select();
-			$where  = $this->build_query_where();
-		}
-		else
-		{
-			return false;
-		}
-
-		$default_config = $this->configQuery["columns"]->get_default_config();
-		$model = $this->configQuery["model"];
-
+		$limit         = $this->build_query_limit();
+		$select        = $this->build_query_select();
+		$where         = $this->build_query_where();
+		$model         = $this->configQuery["model"];
 		$fields_values = '';
+		$i             = 0;
 
-		$i = 0;
-		foreach ($default_config as $key => $value)
+		foreach ($this->configQuery["columns"]->get_default_config() as $key => $value)
 		{
 
 			if(array_key_exists($key, $this->configQuery["update"]))
 			{
 				$fields_values .= ( $i++ ? ', ' :  '' ) . $key . " = ";
-				
 				$value = $this->configQuery["update"][$key];
 
 				if($this->configQuery["columns"]->structures[$key]["is_int"])
@@ -284,6 +289,7 @@ class FastReqBuildQueryString
 				}
 				else
 				{
+					$value = $this->escape($value);
 					$fields_values .= "'$value'";
 				}
 			}
@@ -334,6 +340,10 @@ class FastReqBuildQueryString
 		{
 			return false;
 		}
+	}
+	private function escape($value)
+	{
+		return mysqli_real_escape_string(dbtool::get_instance()->get_mysql_id(), $value);
 	}
 }
 ?>

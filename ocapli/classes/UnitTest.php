@@ -116,8 +116,8 @@ Class UnitTestTool
 
 	function sql_load_provision()
 	{
-		$provision = DbTool::get_requete("DROP TABLE IF EXISTS `unit_test`");
-		$provision_b = DbTool::get_requete("DROP TABLE IF EXISTS `conf_lang_b`");
+		$provision = DbTool::get_request("DROP TABLE IF EXISTS `unit_test`");
+		$provision_b = DbTool::get_request("DROP TABLE IF EXISTS `conf_lang_b`");
 
 		if(!$provision || !$provision_b)
 		{
@@ -126,7 +126,7 @@ Class UnitTestTool
 		else
 		{
 
-		  $provision = DbTool::get_requete("
+		  $provision = DbTool::get_request("
 		  CREATE TABLE IF NOT EXISTS `unit_test` (
 		    `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
 		    `etat` tinyint(1) DEFAULT NULL,
@@ -143,7 +143,7 @@ Class UnitTestTool
 		  ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=30 ;
 		  ");
 
-		  $provision_b = DbTool::get_requete("
+		  $provision_b = DbTool::get_request("
 		  	CREATE TABLE IF NOT EXISTS `conf_lang_b` (
 			  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
 			  `string_id` varchar(255) NOT NULL,
@@ -161,7 +161,7 @@ Class UnitTestTool
 		  else
 		  {
 
-		    $provision = DbTool::get_requete("
+		    $provision = DbTool::get_request("
 			    INSERT INTO `unit_test` (`id`, `etat`, `config`, `id_config`, `id_record`, `created_at`, `updated_at`, `ordre`, `name`, `version`, `description`) VALUES
 			    (7, 1, 'home', 0, 0, '2015-05-06 00:16:40', '2015-06-14 15:41:39', 0, '1F1C13', 8, ''),
 			    (8, 1, 'home', 2, 0, '2015-05-06 00:17:14', '2015-06-14 15:38:45', 0, 'Illustrated paper 1', 8, ''),
@@ -184,7 +184,7 @@ Class UnitTestTool
 			    (29, 0, 'home', 0, 1, '2015-06-14 16:36:16', '2015-06-14 16:36:16', 0, 'Fichier vide', 0, '');
 		    ");
 
-		    $provision_b = DbTool::get_requete("
+		    $provision_b = DbTool::get_request("
 			  INSERT INTO `conf_lang_b` (`id`, `string_id`, `fr`, `eng`) VALUES
 				(1, '2721819029', '5 couleurs de couverture disponibles', 'A traduire'),
 				(2, '2757073943', 'Carnet - Le paon', 'A traduire'),
@@ -246,8 +246,8 @@ Class UnitTestTool
 	}
 	function sql_unload_provision()
 	{
-		$provision = DbTool::get_requete("DROP TABLE IF EXISTS `unit_test`");
-		$provision = DbTool::get_requete("DROP TABLE IF EXISTS `conf_lang_b`");
+		DbTool::get_request("DROP TABLE IF EXISTS `unit_test`");
+		DbTool::get_request("DROP TABLE IF EXISTS `conf_lang_b`");
 	}
 }
 

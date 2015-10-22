@@ -11,7 +11,7 @@ class FastReqColumns
 	{
 		$this->model = $model;
 
-		$req = dbtool::get_requete("SHOW FULL COLUMNS FROM $model");
+		$req = dbtool::get_request("SHOW FULL COLUMNS FROM $model");
 		while($obj = mysqli_fetch_object($req))
 		{
 			$type = strtolower(substr($obj->Type,0,4));
