@@ -13,11 +13,11 @@ class FastReqBuildQueryString
 	}
 	public function get_default_config()
 	{
-		return FastReq::$columns[$this->configQuery["model"]]->get_default_config();
+		return FastReq::$configs[$this->configQuery["model"]]["columns"]->get_default_config();
 	}
 	public function structures()
 	{
-		return FastReq::$columns[$this->configQuery["model"]]->structures;
+		return FastReq::$configs[$this->configQuery["model"]]["columns"]->structures;
 	}
 	public function set_config_query($configQuery)
 	{

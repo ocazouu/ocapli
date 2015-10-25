@@ -1,5 +1,18 @@
 <?php
 
+function underscored_to_camelcase($string)
+{
+	return strtr(
+		ucwords(strtr($string,array("_"=>" ")))
+		,array(" "=>"")
+	);
+}
+
+function camelcase_to_underscored($string)
+{
+	return strtolower(preg_replace('/([A-Z]+)/', '_$1', lcfirst($string)));
+}
+
 function now()
 {
 	$objdate = DateTime::createFromFormat('U.u', microtime(true));

@@ -117,7 +117,7 @@ Class UnitTestTool
 	function sql_load_provision()
 	{
 		$provision = DbTool::get_request("DROP TABLE IF EXISTS `unit_test`");
-		$provision_b = DbTool::get_request("DROP TABLE IF EXISTS `conf_lang_b`");
+		$provision_b = DbTool::get_request("DROP TABLE IF EXISTS `conf_lang`");
 
 		if(!$provision || !$provision_b)
 		{
@@ -144,7 +144,7 @@ Class UnitTestTool
 		  ");
 
 		  $provision_b = DbTool::get_request("
-		  	CREATE TABLE IF NOT EXISTS `conf_lang_b` (
+		  	CREATE TABLE IF NOT EXISTS `conf_lang` (
 			  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
 			  `string_id` varchar(255) NOT NULL,
 			  `fr` varchar(255) NOT NULL,
@@ -163,29 +163,29 @@ Class UnitTestTool
 
 		    $provision = DbTool::get_request("
 			    INSERT INTO `unit_test` (`id`, `etat`, `config`, `id_config`, `id_record`, `created_at`, `updated_at`, `ordre`, `name`, `version`, `description`) VALUES
-			    (7, 1, 'home', 0, 0, '2015-05-06 00:16:40', '2015-06-14 15:41:39', 0, '1F1C13', 8, ''),
-			    (8, 1, 'home', 2, 0, '2015-05-06 00:17:14', '2015-06-14 15:38:45', 0, 'Illustrated paper 1', 8, ''),
-			    (9, 1, 'home', 0, 0, '2015-06-13 13:22:11', '2015-06-14 15:41:32', 0, '66B18B', 12, ''),
-			    (10, 1, 'home', 0, 0, '2015-06-13 13:23:04', '2015-06-14 15:41:28', 0, 'D71C20', 11, ''),
-			    (11, 1, 'home', 0, 0, '2015-06-13 13:23:35', '2015-06-21 10:23:25', 0, 'F0D329', 8, ''),
-			    (12, 1, 'home', 0, 0, '2015-06-13 13:23:59', '2015-06-14 15:41:11', 0, '9CC2DC', 8, ''),
-			    (13, 1, 'home', 1, 0, '2015-06-13 13:31:36', '2015-06-14 15:38:30', 0, 'kraft cover 2', 7, ''),
-			    (14, 1, 'home', 2, 0, '2015-06-13 13:38:59', '2015-06-14 15:38:40', 0, 'Illustrated paper 2', 7, ''),
-			    (15, 1, 'home', 3, 0, '2015-06-13 13:40:51', '2015-06-14 15:39:11', 0, 'White kraft paper', 3, ''),
-			    (17, 1, 'home', 3, 0, '2015-06-13 13:41:39', '2015-06-14 15:39:19', 0, 'White kraft paper 2', 4, ''),
-			    (18, 1, 'home', 4, 0, '2015-06-13 13:45:32', '2015-06-13 14:05:12', 0, 'Demi page unique', 2, ''),
-			    (22, 1, 'home', 5, 0, '2015-06-13 13:58:13', '2015-06-14 15:40:38', 0, 'All types 1', 4, ''),
-			    (23, 1, 'home', 5, 0, '2015-06-13 14:03:28', '2015-06-14 15:40:33', 0, 'All types 2', 3, ''),
-			    (24, 1, 'home', 5, 0, '2015-06-13 19:52:46', '2015-06-14 15:40:25', 0, 'All types 3', 3, ''),
-			    (25, 1, 'home', 5, 0, '2015-06-13 19:52:59', '2015-06-14 15:40:19', 0, 'All types 4', 3, ''),
-			    (26, 1, 'home', 5, 0, '2015-06-13 21:10:00', '2015-06-14 15:40:07', 0, 'All types 5', 3, ''),
-			    (27, 1, 'home', 5, 0, '2015-06-13 21:10:36', '2015-06-14 15:40:01', 0, 'All types 6', 3, ''),
+			    (7, 1, 'home', 0, 1, '2015-05-06 00:16:40', '2015-06-14 15:41:39', 0, '1F1C13', 8, ''),
+			    (8, 1, 'home', 2, 2, '2015-05-06 00:17:14', '2015-06-14 15:38:45', 0, 'Illustrated paper 1', 8, ''),
+			    (9, 1, 'home', 0, 3, '2015-06-13 13:22:11', '2015-06-14 15:41:32', 0, '66B18B', 12, ''),
+			    (10, 1, 'home', 0, 4, '2015-06-13 13:23:04', '2015-06-14 15:41:28', 0, 'D71C20', 11, ''),
+			    (11, 1, 'home', 0, 3, '2015-06-13 13:23:35', '2015-06-21 10:23:25', 0, 'F0D329', 8, ''),
+			    (12, 1, 'home', 0, 2, '2015-06-13 13:23:59', '2015-06-14 15:41:11', 0, '9CC2DC', 8, ''),
+			    (13, 1, 'home', 1, 1, '2015-06-13 13:31:36', '2015-06-14 15:38:30', 0, 'kraft cover 2', 7, ''),
+			    (14, 1, 'home', 2, 2, '2015-06-13 13:38:59', '2015-06-14 15:38:40', 0, 'Illustrated paper 2', 7, ''),
+			    (15, 1, 'home', 3, 3, '2015-06-13 13:40:51', '2015-06-14 15:39:11', 0, 'White kraft paper', 3, ''),
+			    (17, 1, 'home', 3, 4, '2015-06-13 13:41:39', '2015-06-14 15:39:19', 0, 'White kraft paper 2', 4, ''),
+			    (18, 1, 'home', 4, 3, '2015-06-13 13:45:32', '2015-06-13 14:05:12', 0, 'Demi page unique', 2, ''),
+			    (22, 1, 'home', 5, 2, '2015-06-13 13:58:13', '2015-06-14 15:40:38', 0, 'All types 1', 4, ''),
+			    (23, 1, 'home', 5, 1, '2015-06-13 14:03:28', '2015-06-14 15:40:33', 0, 'All types 2', 3, ''),
+			    (24, 1, 'home', 5, 2, '2015-06-13 19:52:46', '2015-06-14 15:40:25', 0, 'All types 3', 3, ''),
+			    (25, 1, 'home', 5, 3, '2015-06-13 19:52:59', '2015-06-14 15:40:19', 0, 'All types 4', 3, ''),
+			    (26, 1, 'home', 5, 4, '2015-06-13 21:10:00', '2015-06-14 15:40:07', 0, 'All types 5', 3, ''),
+			    (27, 1, 'home', 5, 3, '2015-06-13 21:10:36', '2015-06-14 15:40:01', 0, 'All types 6', 3, ''),
 			    (28, 0, 'home', 0, 2, '2015-06-13 23:34:23', '2015-06-13 23:34:23', 0, 'Fichier vide', 0, ''),
 			    (29, 0, 'home', 0, 1, '2015-06-14 16:36:16', '2015-06-14 16:36:16', 0, 'Fichier vide', 0, '');
 		    ");
 
 		    $provision_b = DbTool::get_request("
-			  INSERT INTO `conf_lang_b` (`id`, `string_id`, `fr`, `eng`) VALUES
+			  INSERT INTO `conf_lang` (`id`, `string_id`, `fr`, `eng`) VALUES
 				(1, '2721819029', '5 couleurs de couverture disponibles', 'A traduire'),
 				(2, '2757073943', 'Carnet - Le paon', 'A traduire'),
 				(3, '1701006645', 'Choisissez votre carnet', 'A traduire'),
@@ -246,8 +246,8 @@ Class UnitTestTool
 	}
 	function sql_unload_provision()
 	{
-		DbTool::get_request("DROP TABLE IF EXISTS `unit_test`");
-		DbTool::get_request("DROP TABLE IF EXISTS `conf_lang_b`");
+	//	DbTool::get_request("DROP TABLE IF EXISTS `unit_test`");
+	//	DbTool::get_request("DROP TABLE IF EXISTS `conf_lang`");
 	}
 }
 

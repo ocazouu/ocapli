@@ -115,7 +115,7 @@ class FasReqInstanceRecords
 			$count = DbTool::get_request($this->buildQueryString->for_count($this->configQuery));
 			if($count)
 			{
-				return mysqli_fetch_array($count)[0];
+				return (int)mysqli_fetch_array($count)[0];
 			}
 		}
 		else
@@ -162,7 +162,7 @@ class FasReqInstanceRecords
 	{
 		if($this->create($config))
 		{
-			$auto_increment_column = FastReq::$columns[$this->configQuery["model"]]->auto_increment_column;
+			$auto_increment_column = FastReq::$configs[$this->configQuery["model"]]["columns"]->auto_increment_column;
 
 			if($auto_increment_column)
 			{

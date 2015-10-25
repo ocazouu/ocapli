@@ -88,6 +88,16 @@ Class UnitTestFastReq extends UnitTestTool
 		);
 	}
 
+	function run_test_order_multiple()
+	{
+		$first = UnitTest::order("config ASC")->order("version DESC")->limit(5)->first();
+
+		return Array(
+			"is_true" => ($first["id"] == 9),
+			"final_return" => array($first)
+		);
+	}
+
 	function run_test_order_hard_first()
 	{
 		$first = UnitTest::order("created_at DESC")->order(["config DESC","version ASC"])->order(["created_at DESC","id ASC"])->first();
@@ -108,16 +118,16 @@ Class UnitTestFastReq extends UnitTestTool
 		);
 	}
 
-	function run_test_id_record_is_0_count_all()
+	function run_test_id_record_is_1_count_all()
 	{
-		$where = UnitTest::where(["id_record"=>0]);
+		$where = UnitTest::where(["id_record"=>1]);
 		
 		$count = $where->count();
-		$all = $where->all();
+		$all   = $where->all();
 
 		return Array(
-			"is_true" => (count($all) === 17 && $count == 17),
-			"final_return" => $count
+			"is_true" => (count($all) === 4 && $count === 4),
+			"final_return" => $all
 		);
 	}
 
@@ -161,13 +171,13 @@ Class UnitTestFastReq extends UnitTestTool
 		);
 	}
 
-	function run_test_where_id_record_is_0_limit_2_2()
+	function run_test_where_id_record_is_1_limit_2_2()
 	{
-		$where = UnitTest::where(["id_record" => 0])->limit(2,2)->all();
+		$where = UnitTest::where(["id_record" => 1])->limit(2,2)->all();
 
 		return Array(
-			"is_true" => (count($where) === 2 && $where[0]["id"] == 9),
-			"final_return" => Array($where)
+			"is_true" => (count($where) === 2 && $where[0]["id"] == 23),
+			"final_return" => $where
 		);
 	}
 

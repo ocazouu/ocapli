@@ -3,22 +3,17 @@
 class FastReq 
 {
 	public static 
-		$columns = Array();
+		$configs = Array();
 
 	/* Return array with custom model structures */
 	private static function get_model_and_columuns()
 	{
-		$model = strtr(get_called_class(), array(
-			"UnitTest" => "unit_test",
-			"ConfLang" => "conf_lang_b"
-		));
+		$model_by_class = camelcase_to_underscored(get_called_class());
 
-		if(!array_key_exists($model, self::$columns))
-		{
-			self::$columns[$model] = new FastReqColumns($model);
-		}
-
-		return Array("model"=>$model, "columns"=>self::$columns[$model]);
+		return Array(
+			"model"   => self::$configs[$model_by_class]["model"],
+			"columns" => self::$configs[$model_by_class]["columns"]
+		);
 	}
 	/* Return a new instance of FastReqInstanceRecords */
 	private static function new_instance_records()

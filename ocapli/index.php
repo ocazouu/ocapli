@@ -5,6 +5,7 @@ require('helpers.php');
 
 require('classes/DbTool.php');		// mysql
 require('classes/FastReq.php');
+require('classes/FastReqInstance.php');
 require('classes/FastReqColumns.php');
 require('classes/FastReqInstanceRecords.php');
 require('classes/FastReqBuildQueryString.php');
@@ -12,10 +13,10 @@ require('classes/UnitTest.php');
 
 require('../tests/UnitTestFastReq.php');
 
-require('../models/UnitTest.php');		// mysql
-require('../models/ConfLang.php');		// mysql
 
 DbTool::set_instance();
+
+new FastReqInstance($fast_req_config)
 
 ?><!DOCTYPE html>
 <html>
