@@ -1,3 +1,8 @@
 # ocapli
 
-Framework with PHP 5.5.9 and JavaScript.
+Framework in progress
+ 
+ * PHP 5.5.9
+ * Mysql 5.5
+ * Memcache 1.4.14
+ * JavaScript undefined
