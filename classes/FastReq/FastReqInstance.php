@@ -48,10 +48,8 @@ class FastReqInstance
 								require($models_path.$value);
 
 								$configs[$tables[$model]]               = array();
-								$configs[$tables[$model]]               = array();
 								$configs[$tables[$model]]["model"]      = $model;
 								$configs[$tables[$model]]["columns"]    = $FastReqColumns->get_configs();
-
 
 								$relations = array();
 

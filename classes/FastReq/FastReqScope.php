@@ -186,9 +186,21 @@ class FastReqScope
 		$this->load_records();
 		return $this->get_record(count($this->records)-1);
 	}
+
+	function check_filter($method)
+	{
+		if(in_array($method, $this->configs["class_methods"]))
+		{
+			$ClassModel = $this->ClassModel;
+			$ClassModel::$method($this);
+		}
+	}
 	/* Create one record */
 	function create($config)
 	{
+		$this->check_filter("before_create");
+		$this->check_filter("before_save");
+
 		$this->configQuery["insert"] = $config;
 
 		$buildQuery = FastReq::$queryBuilder[$this->model];
@@ -197,7 +209,9 @@ class FastReqScope
 		$req_insert = MySQL::get_request($buildQuery->for_insert());
 
 		if($req_insert)
-		{	
+		{
+			$this->check_filter("after_create");
+			$this->check_filter("after_save");
 			return true;
 		}
 		else
@@ -216,7 +230,7 @@ class FastReqScope
 			/* Try to match record an unique increment field (id) */
 			if($auto_increment)
 			{
-				$mysqli_insert_id = mysqli_insert_id(MySQL::get_instance()->get_mysql_id());
+				$mysqli_insert_id = $this->retrieve_insert_id();
 
 				return $this->where([$auto_increment => $mysqli_insert_id])->first();
 			}
@@ -243,6 +257,11 @@ class FastReqScope
 			return false;
 		}
 	}
+
+	function retrieve_insert_id()
+	{
+		mysqli_insert_id(MySQL::get_instance()->get_mysql_id());
+	}
 	/* 
 		Receives one simple array of model data
 		try to update all records of scope and return true or false 
@@ -251,11 +270,7 @@ class FastReqScope
 	{
 		$this->configQuery["update"] = $config;
 
-		if(in_array("before_save", $this->configs["class_methods"]))
-		{
-			$ClassModel = $this->ClassModel;
-			$ClassModel::before_save($this);
-		}
+		$this->check_filter("before_save");
 
 		$buildQuery = FastReq::$queryBuilder[$this->model];
 		$buildQuery->set_config_query($this->configQuery);
@@ -263,7 +278,8 @@ class FastReqScope
 		$req_update = MySQL::get_request($buildQuery->for_update());
 
 		if($req_update)
-		{	
+		{
+			$this->check_filter("after_save");
 			return true;
 		}
 		else
@@ -291,13 +307,16 @@ class FastReqScope
 	*/
 	function delete_all()
 	{
+		$this->check_filter("before_delete");
+
 		$buildQuery = FastReq::$queryBuilder[$this->model];
 		$buildQuery->set_config_query($this->configQuery);
 
 		$req_delete = MySQL::get_request($buildQuery->for_delete());
 
 		if($req_delete)
-		{	
+		{
+			$this->check_filter("after_delete");
 			return true;
 		}
 		else

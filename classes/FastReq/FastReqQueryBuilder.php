@@ -22,7 +22,6 @@ class FastReqQueryBuilder
 	{
 		$this->configQuery = $configQuery;
 	}
-
 	public function for_insert()
 	{
 
@@ -177,7 +176,6 @@ class FastReqQueryBuilder
 			return false;
 		}
 	}
-
 	private function build_query_select($for_count = false)
 	{
 		$relations = array();
@@ -332,7 +330,6 @@ class FastReqQueryBuilder
 		}
 		return "$string";
 	}
-
 	private function build_filter_where($config_query_where, $adapt_relation, $i)
 	{
 		$where = "";
@@ -372,7 +369,6 @@ class FastReqQueryBuilder
 		}
 
 		return $where;
-
 	}
 	private function build_query_order()
 	{
